@@ -56,10 +56,6 @@ var knwlInstance2 = new Knwl('english');
    
    We also check that an error did not occur in the request and that we
    recieved a successful http response. (statusCode == 200).
-
-   Whilst I'm learning about HTML and cheerio I decided just to try the knwl
-   plug-ins on the entire html. From what I've tried it can find email address
-   quite decently but is no use for finding dates & phones.
 */
 try {
     request(urlFinder(emailAddress) , function (error, response, html) {  
@@ -69,26 +65,47 @@ try {
             var web1 = web.replace(/[\s]/g, '-');
             var web2 = web1.replace(/[\", \+]/g, ' ');
 
-            knwlInstance1.register('dates', require('knwl.js/default_plugins/dates'));
+            // Set up the plugins
             knwlInstance1.register('emails', require('knwl.js/default_plugins/emails'));
+            knwlInstance2.register('links', require('knwl.js/default_plugins/links'));
             knwlInstance2.register('phones', require('knwl.js/default_plugins/phones'));
-
+            
+            // Initialise the two instances of the html, with web2 better
+            // suited for parsing links and phone numbers.
             knwlInstance1.init(web);
             knwlInstance2.init(web2);
-            var dates = knwlInstance1.get('dates');
             var emails = knwlInstance1.get('emails');
+            var links = knwlInstance2.get('links');
             var phones = knwlInstance2.get('phones');
+            var wasOutput = false;
 
+            // Print to console all found phone numbers.
             for(let i = 0; i < phones.length; i++) {
-                console.log(phones[i]);
+                console.log("Phone Number: " + phones[i].phone);
+                wasOutput = true;
             }
 
+            // Print to console all found email addresses.
             for(let i = 0; i < emails.length; i++) {
-                console.log(emails[i]);
+                console.log("Email Adress: " + emails[i].address);
+                wasOutput = true;
+            }
+
+            // Print to console all found social media account links.
+            var social = /twitter|facebook|instagram|linkedin|youtube/;
+            for(let i = 0; i < links.length; i++) {
+                if(social.test(links[i].link) == true) {
+                    console.log("Social Account: " + links[i].link);
+                    wasOutput = true;
+                }
+            }
+
+            // If no data was found then we notify the user of this.
+            if(wasOutput == false) {
+                console.log("No data retrieved.")
             }
         }
     });
 } catch(error) {
     console.log("Please enter a correct email address as a command argument.");
 }
-

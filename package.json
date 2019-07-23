@@ -1,0 +1,23 @@
+{
+    "name": "robwebscraper",
+    "description": "Accepts an email on the command lines and retrieves related data.",
+    "version": "1.0.0",
+    "keywords": [
+        "web",
+        "scraper"
+    ],
+    "author": {
+        "name": "Robert Langton",
+        "email": "RobertLangton01@gmail.com"
+    },
+    "main": "robwebscraper",
+    "dependencies": { 
+        "knwl.js": "1.0.2",
+        "cheerio": "1.0.0-rc.3"
+
+    },
+    "engines": {
+        "node": "12.6.0"
+    },
+
+}

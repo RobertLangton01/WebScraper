@@ -1,4 +1,4 @@
-/* In Javascript, command line
+/* In javascript, command line
  arguements are stored in process.argv, with the first
  two usually being 'node' and the path to the script.
  So we should take the third commandline arg.
